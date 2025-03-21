@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { App } = require("@slack/bolt");
+const { handleMessage, handleObjectQuery } = require("./services/slackService");
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -8,6 +9,9 @@ const app = new App({
   appToken: process.env.SLACK_APP_TOKEN,
   port: process.env.PORT || 3000,
 });
+
+// Standard greeting
+app.message("hello", handleMessage);
 
 (async () => {
   await app.start();
