@@ -79,6 +79,9 @@ web_modules/
 .env.production.local
 .env.local
 
+# credentials
+credentials/service-account-key.json
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
