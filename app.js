@@ -10,8 +10,9 @@ const app = new App({
   port: process.env.PORT || 3000,
 });
 
-// Standard greeting
 app.message("hello", handleMessage);
+
+app.message(/where is|find|locate/, handleObjectQuery);
 
 (async () => {
   await app.start();

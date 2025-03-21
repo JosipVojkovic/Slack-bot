@@ -1,7 +1,5 @@
-// services/googleSheetsService.js
 const { google } = require("googleapis");
 
-// Service Account authentication
 async function getAuthClient() {
   const auth = new google.auth.GoogleAuth({
     keyFile: process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH,
@@ -24,6 +22,32 @@ async function getSheetData(spreadsheetId, range) {
   } catch (error) {
     console.error("Error fetching sheet data:", error);
     throw error;
+  }
+}
+
+async function findObjectLocation(objectName) {
+  const spreadsheetId = process.env.OBJECT_SPREADSHEET_ID;
+  const range = process.env.OBJECT_SHEET_RANGE || "Sheet1!A:B";
+
+  try {
+    const rows = await getSheetData(spreadsheetId, range);
+
+    if (!rows || rows.length === 0) {
+      return "No data found in the inventory database.";
+    }
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row[0] && row[0].toLowerCase() === objectName.toLowerCase()) {
+        return row[1]
+          ? `${objectName} is located at: ${row[1]}`
+          : `${objectName} was found but has no location specified`;
+      }
+    }
+    return `Sorry, I couldn't find "${objectName}" in our inventory.`;
+  } catch (err) {
+    console.error("Error searching for object:", err);
+    return "Sorry, I encountered an error when trying to access the inventory database.";
   }
 }
 

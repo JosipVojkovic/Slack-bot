@@ -1,4 +1,3 @@
-// services/slackService.js
 const { findObjectLocation } = require("./googleSheetsService");
 
 async function handleMessage({ message, say }) {
@@ -8,7 +7,6 @@ async function handleMessage({ message, say }) {
 async function handleObjectQuery({ message, say }) {
   const text = message.text.toLowerCase();
 
-  // Extract the object name - this can be improved with regex or NLP
   let objectName;
   if (text.includes("where is ")) {
     objectName = text.replace("where is ", "").trim();
